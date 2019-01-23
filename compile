@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+rm -rf bin
+mkdir bin
+javac -d bin src/*/*
+javac -cp "jars/idea_rt.jar:jars/junit-rt.jar:jars/junit5-rt.jar:jars/charsets.jar:jars/cldrdata.jar:jars/dnsns.jar:jars/jaccess.jar:jars/localedata.jar:jars/nashorn.jar:jars/sunec.jar:jars/sunjce_provider.jar:jars/sunpkcs11.jar:jars/zipfs.jar:jars/jce.jar:jars/jsse.jar:jars/management-agent.jar:jars/resources.jar:jars/rt.jar:jars/junit-jupiter-api-5.0.0.jar:jars/opentest4j-1.0.0.jar:jars/junit-platform-runner-1.0.0.jar:jars/junit-platform-suite-api-1.0.0.jar:jars/junit-platform-engine-1.0.0.jar:jars/junit-jupiter-engine-5.0.0.jar:jars/junit-platform-launcher-1.0.0.jar:jars/junit-platform-commons-1.0.0.jar:bin" -d bin/ test/*/*/*
+mkdir logs

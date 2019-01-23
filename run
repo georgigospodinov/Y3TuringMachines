@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+rm -rf logs
+mkdir logs
+if [ "$1" = "tests" ]
+then
+    echo "run all tests"
+    CMD="java -cp \"jars/idea_rt.jar:jars/junit-rt.jar:jars/junit5-rt.jar:jars/charsets.jar:jars/cldrdata.jar:jars/dnsns.jar:jars/jaccess.jar:jars/localedata.jar:jars/nashorn.jar:jars/sunec.jar:jars/sunjce_provider.jar:jars/sunpkcs11.jar:jars/zipfs.jar:jars/jce.jar:jars/jsse.jar:jars/management-agent.jar:jars/resources.jar:jars/rt.jar:jars/junit-jupiter-api-5.0.0.jar:jars/opentest4j-1.0.0.jar:jars/junit-platform-runner-1.0.0.jar:jars/junit-platform-suite-api-1.0.0.jar:jars/junit-platform-engine-1.0.0.jar:jars/junit-jupiter-engine-5.0.0.jar:jars/junit-platform-launcher-1.0.0.jar:jars/junit-platform-commons-1.0.0.jar:bin\" com.intellij.rt.execution.junit.JUnitStarter -ideVersion5 -junit5"
+    TEST_FOLDER="bin/tm/tests/"
+    shift #removes first argument
+
+    # If only a single argument was present, then run all test files.
+    if [ $# = 0 ]
+    then
+        INPUT_FILES=(Basic Brackets Div3 Div5 Sort SumCarry SumSimple Palindrome)
+    else  # Otherwise run only the specified files.
+        INPUT_FILES=$@
+    fi
+    for file in ${INPUT_FILES[@]}
+    do
+        echo "------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+        echo ${file}
+        eval ${CMD} "tm.tests."${file}
+    done
+else
+    TM_NAME=$1
+    TM="tm_descriptors/"$1".tm"
+    INPUTS="inputs/"$1"/"
+    INPUTS_EXTENSION=".in"
+    UTM="java -cp bin tm.UniversalTuringMachine"
+    shift #removes first argument
+
+    # If only a single argument was present, then run all input files.
+    if [ $# = 0 ]
+    then
+        if [ $TM_NAME = "sum" ]
+        then
+            echo "HERE"
+            for files in ${INPUTS}"*/*"
+            do
+                ARGS=${files}
+            done
+        else
+            for files in ${INPUTS}"*"
+            do
+                ARGS=${files}
+            done
+        fi
+    else  # Otherwise run only the specified files.
+        INPUT_FILES=$@
+        ARGS=""
+        for i in ${INPUT_FILES}
+        do
+            ARGS=${ARGS}${INPUTS}${i}${INPUTS_EXTENSION}" "
+        done
+    fi  # end if
+
+    echo ${UTM} ${TM} ${ARGS}
+    # eval executes the command of the variable
+    eval ${UTM} ${TM} ${ARGS}
+fi
